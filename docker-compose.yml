@@ -1,7 +1,7 @@
 version: "2"
 services:
   application1:
-    image: alpha-java-task1
+    image: alpha-java-task2
     expose:
     - "8080"
     ports:

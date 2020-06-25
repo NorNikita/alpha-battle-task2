@@ -1,6 +1,6 @@
 FROM openjdk:11
 
-ARG JAR_FILE=target/ru.alpha.task1-1.0-SNAPSHOT.jar
+ARG JAR_FILE=target/ru.alpha.task2-1.0-SNAPSHOT.jar
 
 ADD ${JAR_FILE} test_task.jar
 
