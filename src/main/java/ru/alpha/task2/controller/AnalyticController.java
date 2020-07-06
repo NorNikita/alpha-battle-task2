@@ -3,7 +3,8 @@ package ru.alpha.task2.controller;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.alpha.task2.model.dto.HealthDto;
+import ru.alpha.task2.model.dto.StatUserDto;
+import ru.alpha.task2.model.dto.StatusDto;
 import ru.alpha.task2.model.dto.StatisticPaymentDto;
 import ru.alpha.task2.service.IAgregationService;
 
@@ -17,8 +18,8 @@ public class AnalyticController {
     private IAgregationService agregationService;
 
     @GetMapping("/admin/health")
-    public ResponseEntity<HealthDto> health() {
-        return ResponseEntity.ok(HealthDto.builder().status("UP").build());
+    public ResponseEntity<StatusDto> health() {
+        return ResponseEntity.ok(StatusDto.builder().status("UP").build());
     }
 
     @GetMapping
@@ -31,5 +32,11 @@ public class AnalyticController {
     @ResponseBody
     public StatisticPaymentDto getUserAnalytic(@PathVariable String userId) {
         return agregationService.getAnalyticByUserId(userId);
+    }
+
+    @GetMapping("/{userId}/stat")
+    @ResponseBody
+    public StatUserDto statUser(@PathVariable String userId) {
+        return agregationService.getStat(userId);
     }
 }

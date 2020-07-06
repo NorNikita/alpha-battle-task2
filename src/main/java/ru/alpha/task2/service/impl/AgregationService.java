@@ -2,18 +2,17 @@ package ru.alpha.task2.service.impl;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import ru.alpha.task2.model.dto.PaymentDto;
+import ru.alpha.task2.model.dto.StatCategoryDto;
+import ru.alpha.task2.model.dto.StatUserDto;
 import ru.alpha.task2.model.dto.StatisticPaymentDto;
-import ru.alpha.task2.model.exception.AlphaTaskException;
-import ru.alpha.task2.model.exception.ExceptionMessage;
 import ru.alpha.task2.service.IAgregationService;
 import ru.alpha.task2.service.IDataService;
 
 import java.util.*;
-import java.util.function.Predicate;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
-
-import static java.util.stream.Collectors.groupingBy;
 
 @Service
 @AllArgsConstructor
@@ -31,6 +30,20 @@ public class AgregationService implements IAgregationService {
         List<PaymentDto> paymentDtos = dataService
                 .getAllPaymentsByUserId(userId);
         return getStat(paymentDtos).get(0);
+    }
+
+    @Override
+    public StatUserDto getStat(String userId) {
+        StatCategoryDto stat = dataService.getAllPaymentsByUserId(userId)
+                .stream()
+                .collect(StatCategoryDto::new, StatCategoryDto::accumulate, StatCategoryDto::combine);
+        
+        return StatUserDto.builder()
+                .oftenCategoryId(stat.getOftenCategoryId())
+                .rareCategoryId(stat.getRareCategoryId())
+                .maxAmountCategoryId(stat.getMaxAmountCategoryId())
+                .minAmountCategoryId(stat.getMinAmountCategoryId())
+                .build();
     }
 
     private List<StatisticPaymentDto> getStat(List<PaymentDto> paymentDtos) {
@@ -81,4 +94,3 @@ public class AgregationService implements IAgregationService {
                 .collect(Collectors.toList());
     }
 }
-

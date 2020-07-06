@@ -9,7 +9,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class HealthDto {
+public class StatUserDto {
 
-    private String status;
+    private String oftenCategoryId;
+    private String rareCategoryId;
+    private String maxAmountCategoryId;
+    private String minAmountCategoryId;
 }
