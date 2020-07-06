@@ -1,4 +1,4 @@
-package ru.alpha.task2.model;
+package ru.alpha.task2.model.entities;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

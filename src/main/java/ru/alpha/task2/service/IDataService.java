@@ -1,7 +1,12 @@
 package ru.alpha.task2.service;
 
-import ru.alpha.task2.model.PaymentsDto;
+import ru.alpha.task2.model.dto.PaymentDto;
+
+import java.util.List;
 
 public interface IDataService {
-    void savePaymentsDto(PaymentsDto paymentsDto);
+
+    void savePaymentsDto(PaymentDto paymentsDto);
+
+    List<PaymentDto> getAllPayments();
 }

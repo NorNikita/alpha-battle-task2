@@ -1,4 +1,4 @@
-package ru.alpha.task2.model;
+package ru.alpha.task2.model.dto;
 
 
 import lombok.AllArgsConstructor;
@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class PaymentsDto {
+public class PaymentDto {
 
     private String ref;
     private Long categoryId;
@@ -19,13 +19,4 @@ public class PaymentsDto {
     private String desc;
     private Double amount;
 
-//    {
-//        "ref":"U030306190000188",
-//            "categoryId":1,
-//            "userId":"XAABAA",
-//            "recipientId":"XA3SZV",
-//            "desc":"Платеж за услуги",
-//            "amount":10.0
-//
-//    }
 }

@@ -8,7 +8,8 @@ ip=$(dig +short myip.opendns.com @resolver1.opendns.com)
 
 echo ${ip}
 
-EXTERNAL_IP=${ip} docker-compose up -d
+#EXTERNAL_IP=${ip} docker-compose up -d
+docker-compose up -d
 
 sleep 5s
 

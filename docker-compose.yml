@@ -1,13 +1,13 @@
 version: "2"
 services:
-  application1:
-    image: alpha-java-task2
-    expose:
-    - "8081"
-    ports:
-    - "8081:8081"
-    depends_on:
-      - postgresql
+#  application1:
+#    image: alpha-java-task2
+#    expose:
+#    - "8081"
+#    ports:
+#    - "8081:8081"
+#    depends_on:
+#      - postgresql
   postgresql:
     restart: always
     image: postgres:11
