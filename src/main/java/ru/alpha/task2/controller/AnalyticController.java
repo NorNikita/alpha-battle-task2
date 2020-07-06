@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.alpha.task2.model.dto.StatUserDto;
 import ru.alpha.task2.model.dto.StatusDto;
 import ru.alpha.task2.model.dto.StatisticPaymentDto;
+import ru.alpha.task2.model.dto.TemplateDto;
 import ru.alpha.task2.service.IAgregationService;
 
 import java.util.List;
@@ -38,5 +39,11 @@ public class AnalyticController {
     @ResponseBody
     public StatUserDto statUser(@PathVariable String userId) {
         return agregationService.getStat(userId);
+    }
+
+    @GetMapping("/{userId}/templates")
+    @ResponseBody
+    public List<TemplateDto> getTemplatePayments(@PathVariable String userId) {
+        return agregationService.getTemplatePayments(userId);
     }
 }

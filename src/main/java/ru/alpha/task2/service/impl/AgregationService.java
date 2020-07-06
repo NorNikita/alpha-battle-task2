@@ -1,14 +1,15 @@
 package ru.alpha.task2.service.impl;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.alpha.task2.model.dto.PaymentDto;
-import ru.alpha.task2.model.dto.StatCategoryDto;
-import ru.alpha.task2.model.dto.StatUserDto;
-import ru.alpha.task2.model.dto.StatisticPaymentDto;
+import ru.alpha.task2.model.dto.*;
 import ru.alpha.task2.service.IAgregationService;
 import ru.alpha.task2.service.IDataService;
 
+import java.io.IOException;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +21,7 @@ import java.util.stream.Collectors;
 public class AgregationService implements IAgregationService {
 
     private IDataService dataService;
+    private ObjectMapper mapper;
 
     @Override
     public List<StatisticPaymentDto> getAllAnalytics() {
@@ -46,6 +48,48 @@ public class AgregationService implements IAgregationService {
                 .minAmountCategoryId(stat.getMinAmountCategoryId())
                 .build();
     }
+
+    @Override
+    public List<TemplateDto> getTemplatePayments(String userId) {
+
+        String template = "{\"recipientId\":\"%s\",\"categoryId\":%s,\"amount\":%s}";
+
+        @Data
+        @NoArgsConstructor
+        @AllArgsConstructor
+        class Dto {
+            String ref;
+            String template;
+        }
+
+        return dataService.getAllPaymentsByUserId(userId)
+                .stream()
+                .map(dto ->
+                        new Dto(
+                                dto.getRef(),
+                                String.format(template, dto.getRecipientId(), dto.getCategoryId(), dto.getAmount())
+                        )
+                )
+                .collect(
+                         Collectors.groupingBy(
+                                 Dto::getTemplate,
+                                 Collectors.toList()
+                         )
+                )
+                .entrySet()
+                .stream()
+                .filter(entry -> entry.getValue().size() > 2)
+                .map(entry -> {
+                            try {
+                                return mapper.readValue(entry.getKey(), TemplateDto.class);
+                            } catch (IOException e) {
+                                return null;
+                            }
+                })
+                .collect(Collectors.toList());
+    }
+
+
 
     private List<StatisticPaymentDto> getStat(List<PaymentDto> paymentDtos) {
         return paymentDtos
