@@ -2,13 +2,14 @@ package ru.alpha.task2.service.impl;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.alpha.task2.model.entities.Payments;
 import ru.alpha.task2.model.dto.PaymentDto;
+import ru.alpha.task2.model.entities.Payments;
+import ru.alpha.task2.model.exception.AlphaTaskException;
+import ru.alpha.task2.model.exception.ExceptionMessage;
 import ru.alpha.task2.repository.PaymentsRepo;
 import ru.alpha.task2.service.IDataService;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -48,8 +49,9 @@ public class DataService implements IDataService {
     }
 
     @Override
-    public Optional<List<PaymentDto>> getAllPaymentsByUserId(String userId) {
-        return Optional.of(paymentsRepo.findAllByUserId(userId)
+    public List<PaymentDto> getAllPaymentsByUserId(String userId) {
+        return paymentsRepo.findAllByUserId(userId)
+                .orElseThrow(() -> new AlphaTaskException(ExceptionMessage.USER_NOT_FOUND))
                 .stream()
                 .map(payment ->
                         PaymentDto.builder()
@@ -60,6 +62,6 @@ public class DataService implements IDataService {
                                 .desc(payment.getDesc())
                                 .amount(payment.getAmount())
                                 .build())
-                .collect(Collectors.toList()));
+                .collect(Collectors.toList());
     }
 }

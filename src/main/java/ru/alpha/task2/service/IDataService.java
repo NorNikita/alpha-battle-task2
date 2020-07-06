@@ -3,7 +3,6 @@ package ru.alpha.task2.service;
 import ru.alpha.task2.model.dto.PaymentDto;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface IDataService {
 
@@ -11,5 +10,5 @@ public interface IDataService {
 
     List<PaymentDto> getAllPayments();
 
-    Optional<List<PaymentDto>> getAllPaymentsByUserId(String userId);
+    List<PaymentDto> getAllPaymentsByUserId(String userId);
 }

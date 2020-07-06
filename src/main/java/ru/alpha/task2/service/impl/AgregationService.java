@@ -28,9 +28,9 @@ public class AgregationService implements IAgregationService {
 
     @Override
     public StatisticPaymentDto getAnalyticByUserId(String userId) {
-        return getStat(dataService
-                .getAllPaymentsByUserId(userId).orElseThrow(() -> new AlphaTaskException(ExceptionMessage.USER_NOT_FOUND)))
-                .get(0);
+        List<PaymentDto> paymentDtos = dataService
+                .getAllPaymentsByUserId(userId);
+        return getStat(paymentDtos).get(0);
     }
 
     private List<StatisticPaymentDto> getStat(List<PaymentDto> paymentDtos) {
