@@ -2,7 +2,6 @@ package ru.alpha.task2.service.impl;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 import ru.alpha.task2.model.dto.PaymentDto;
 import ru.alpha.task2.model.dto.StatCategoryDto;
 import ru.alpha.task2.model.dto.StatUserDto;
@@ -10,8 +9,10 @@ import ru.alpha.task2.model.dto.StatisticPaymentDto;
 import ru.alpha.task2.service.IAgregationService;
 import ru.alpha.task2.service.IDataService;
 
-import java.util.*;
-import java.util.stream.Collector;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 @Service
@@ -37,7 +38,7 @@ public class AgregationService implements IAgregationService {
         StatCategoryDto stat = dataService.getAllPaymentsByUserId(userId)
                 .stream()
                 .collect(StatCategoryDto::new, StatCategoryDto::accumulate, StatCategoryDto::combine);
-        
+
         return StatUserDto.builder()
                 .oftenCategoryId(stat.getOftenCategoryId())
                 .rareCategoryId(stat.getRareCategoryId())
