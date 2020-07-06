@@ -4,10 +4,13 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.alpha.task2.model.dto.PaymentDto;
 import ru.alpha.task2.model.dto.StatisticPaymentDto;
+import ru.alpha.task2.model.exception.AlphaTaskException;
+import ru.alpha.task2.model.exception.ExceptionMessage;
 import ru.alpha.task2.service.IAgregationService;
 import ru.alpha.task2.service.IDataService;
 
 import java.util.*;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.groupingBy;
@@ -19,9 +22,19 @@ public class AgregationService implements IAgregationService {
     private IDataService dataService;
 
     @Override
-    public List<StatisticPaymentDto> getAnaliticByUserId() {
+    public List<StatisticPaymentDto> getAllAnalytics() {
+        return getStat(dataService.getAllPayments());
+    }
 
-        return dataService.getAllPayments()
+    @Override
+    public StatisticPaymentDto getAnalyticByUserId(String userId) {
+        return getStat(dataService
+                .getAllPaymentsByUserId(userId).orElseThrow(() -> new AlphaTaskException(ExceptionMessage.USER_NOT_FOUND)))
+                .get(0);
+    }
+
+    private List<StatisticPaymentDto> getStat(List<PaymentDto> paymentDtos) {
+        return paymentDtos
                 .stream()
                 .collect(
                         Collectors.groupingBy(

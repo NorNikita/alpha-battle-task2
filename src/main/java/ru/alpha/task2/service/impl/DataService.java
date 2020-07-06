@@ -8,6 +8,7 @@ import ru.alpha.task2.repository.PaymentsRepo;
 import ru.alpha.task2.service.IDataService;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -44,5 +45,21 @@ public class DataService implements IDataService {
                                 .amount(payment.getAmount())
                                 .build())
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public Optional<List<PaymentDto>> getAllPaymentsByUserId(String userId) {
+        return Optional.of(paymentsRepo.findAllByUserId(userId)
+                .stream()
+                .map(payment ->
+                        PaymentDto.builder()
+                                .ref(payment.getRef())
+                                .categoryId(payment.getCategoryId())
+                                .userId(payment.getUserId())
+                                .recipientId(payment.getRecipientId())
+                                .desc(payment.getDesc())
+                                .amount(payment.getAmount())
+                                .build())
+                .collect(Collectors.toList()));
     }
 }

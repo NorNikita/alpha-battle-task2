@@ -6,5 +6,7 @@ import java.util.List;
 
 public interface IAgregationService {
 
-    List<StatisticPaymentDto> getAnaliticByUserId();
+    List<StatisticPaymentDto> getAllAnalytics();
+
+    StatisticPaymentDto getAnalyticByUserId(String userId);
 }
